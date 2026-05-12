@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Doer Terminal Agent</title>
+    <link rel="stylesheet" href="/static/styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Doer</p>
+          <h1>Terminal Agent</h1>
+        </div>
+        <div class="cwd-panel" aria-live="polite">
+          <span class="cwd-label">Current directory</span>
+          <code id="current-directory">Loading...</code>
+        </div>
+      </header>
+
+      <main class="chat-shell">
+        <section id="messages" class="messages" aria-live="polite"></section>
+
+        <form id="chat-form" class="composer">
+          <textarea
+            id="message-input"
+            name="message"
+            rows="1"
+            placeholder="Write a message"
+            autocomplete="off"
+            required
+          ></textarea>
+          <button id="send-button" type="submit">Send</button>
+        </form>
+      </main>
+    </div>
+
+    <template id="message-template">
+      <article class="message">
+        <div class="bubble">
+          <div class="message-header">
+            <span class="role"></span>
+            <span class="status"></span>
+          </div>
+          <pre class="content"></pre>
+          <details class="details">
+            <summary>Execution details</summary>
+            <dl>
+              <div>
+                <dt>Command</dt>
+                <dd><code class="command"></code></dd>
+              </div>
+              <div>
+                <dt>Exit code</dt>
+                <dd class="exit-code"></dd>
+              </div>
+              <div>
+                <dt>Retries</dt>
+                <dd class="retries"></dd>
+              </div>
+              <div>
+                <dt>Review</dt>
+                <dd class="review"></dd>
+              </div>
+            </dl>
+          </details>
+        </div>
+      </article>
+    </template>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>

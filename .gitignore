@@ -1,0 +1,47 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+env/
+doerVenv/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+backend/.env
+backend/.env.*
+!backend/.env.example
+
+# Flask runtime
+instance/
+*.log
+
+# OS and editor metadata
+.DS_Store
+._*
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build and packaging outputs
+build/
+dist/
+*.egg-info/
+
+# Node/frontend dependency outputs, if added later
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
