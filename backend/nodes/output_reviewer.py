@@ -40,12 +40,22 @@ def _extract_json(text: str) -> dict[str, Any]:
 
 def _fallback_review(state: AgentState) -> dict[str, Any]:
     exit_code = state.get("exit_code", state.get("returncode", 0))
+    retry_count = state.get("retry_count", 0)
+    max_retries = state.get("max_retries", 3)
 
     if exit_code == 0:
         return {
             "goal_achieved": True,
             "review_decision": "SUCCESS",
             "review_reasoning": "The command completed successfully, and the reviewer response could not be parsed.",
+            "retry_command": "",
+        }
+
+    if state.get("task_type") == "bash_script" and retry_count < max_retries:
+        return {
+            "goal_achieved": False,
+            "review_decision": "RETRY",
+            "review_reasoning": "The bash script failed, and the reviewer response could not be parsed.",
             "retry_command": "",
         }
 
@@ -61,6 +71,7 @@ def output_reviewer(state: AgentState) -> dict[str, Any]:
     retry_count = state.get("retry_count", 0)
     max_retries = state.get("max_retries", 3)
     exit_code = state.get("exit_code", state.get("returncode", 0))
+    task_type = state.get("task_type", "single_command")
 
     messages = [
         SystemMessage(content=load_reviewer_prompt()),
@@ -68,7 +79,10 @@ def output_reviewer(state: AgentState) -> dict[str, Any]:
             content=(
                 f"User goal:\n{state.get('user_input', '')}\n\n"
                 f"Current working directory:\n{state.get('current_directory', '')}\n\n"
+                f"Execution strategy:\n{task_type}\n\n"
                 f"Executed command:\n{state.get('command', '')}\n\n"
+                f"Script path:\n{state.get('script_path', '')}\n\n"
+                f"Bash script:\n{state.get('bash_script', '')}\n\n"
                 f"stdout:\n{state.get('stdout', '')}\n\n"
                 f"stderr:\n{state.get('stderr', '')}\n\n"
                 f"exit_code:\n{exit_code}\n\n"
@@ -93,6 +107,8 @@ def output_reviewer(state: AgentState) -> dict[str, Any]:
     if goal_achieved:
         review_decision = "SUCCESS"
         retry_command = ""
+    elif retry_count < max_retries and task_type == "bash_script":
+        review_decision = "RETRY"
     elif retry_command and retry_count < max_retries:
         review_decision = "RETRY"
     else:

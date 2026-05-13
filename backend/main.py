@@ -6,7 +6,10 @@ from graph import app
 def main() -> None:
     state: AgentState = {
         "current_directory": os.getcwd(),
+        "task_type": "",
         "command": "",
+        "bash_script": "",
+        "script_path": "",
         "stdout": "",
         "stderr": "",
         "returncode": 0,
@@ -32,6 +35,10 @@ def main() -> None:
         state["review_decision"] = ""
         state["review_reasoning"] = ""
         state["retry_command"] = ""
+        state["task_type"] = ""
+        state["command"] = ""
+        state["bash_script"] = ""
+        state["script_path"] = ""
         state = app.invoke(state) #type: ignore
 
         if state["stdout"]:

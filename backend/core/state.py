@@ -4,7 +4,10 @@ from typing import TypedDict
 class AgentState(TypedDict, total=False):
     user_input: str
     current_directory: str
+    task_type: str
     command: str
+    bash_script: str
+    script_path: str
     stdout: str
     stderr: str
     returncode: int

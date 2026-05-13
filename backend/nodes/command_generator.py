@@ -17,7 +17,7 @@ load_dotenv(BACKEND_DIR.parent / ".env")
 llm = HuggingFaceEndpoint(
     repo_id=os.getenv("HF_MODEL_ID", "Qwen/Qwen2.5-Coder-32B-Instruct"),
     task="text-generation",
-    max_new_tokens=128,
+    max_new_tokens=512,
     do_sample=False,
     repetition_penalty=1.03,
     provider=os.getenv("HF_PROVIDER", "auto"),

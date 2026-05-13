@@ -24,7 +24,10 @@ chat_store: dict[str, list[dict[str, Any]]] = {}
 def _new_state() -> AgentState:
     return {
         "current_directory": os.getcwd(),
+        "task_type": "",
         "command": "",
+        "bash_script": "",
+        "script_path": "",
         "stdout": "",
         "stderr": "",
         "returncode": 0,
@@ -62,6 +65,10 @@ def _reset_for_user_input(state: AgentState, user_input: str) -> None:
     state["review_decision"] = ""
     state["review_reasoning"] = ""
     state["retry_command"] = ""
+    state["task_type"] = ""
+    state["command"] = ""
+    state["bash_script"] = ""
+    state["script_path"] = ""
     state["stdout"] = ""
     state["stderr"] = ""
     state["returncode"] = 0
@@ -143,6 +150,9 @@ def chat() -> Any:
         "role": "assistant",
         "content": _assistant_content(result_state),
         "command": result_state.get("command", ""),
+        "task_type": result_state.get("task_type", ""),
+        "bash_script": result_state.get("bash_script", ""),
+        "script_path": result_state.get("script_path", ""),
         "stdout": result_state.get("stdout", ""),
         "stderr": result_state.get("stderr", ""),
         "exit_code": result_state.get("exit_code", result_state.get("returncode", 0)),
